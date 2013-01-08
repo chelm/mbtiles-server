@@ -9,6 +9,6 @@ Then:
 
 > npm install
 
-> node server.js 
+> node server.js [tilefile]
 
 visit [http://localhost:3000/3/1/2.png](http://localhost:3000/3/1/2.png)

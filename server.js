@@ -1,7 +1,13 @@
 var app = require('express').createServer(),
   MBTiles = require('mbtiles');
 
-var TILES = '{YOURTILES}.mbtiles';
+
+if(process.argv.length < 3) {
+  console.log("Error! Missing TILES filename.\nUsage: node server.js TILES");
+  process.exit(1)
+}
+
+var TILES = String(process.argv[2]).replace(/\.mbtiles/,'') + '.mbtiles';
 
 new MBTiles(__dirname + '/' + TILES, function(err, mbtiles) {
   if (err) throw err;
@@ -19,7 +25,7 @@ new MBTiles(__dirname + '/' + TILES, function(err, mbtiles) {
   });
 
 
-console.log('Listening on port: ' + 3000);
-app.listen(3000);
+  console.log('Listening on port: ' + 3000);
+  app.listen(3000);
 
 });
