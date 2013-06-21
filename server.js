@@ -1,6 +1,6 @@
-var app = require('express').createServer(),
-  MBTiles = require('mbtiles');
-
+var express = require("express"),
+    app = express(),
+    MBTiles = require('mbtiles');
 
 if(process.argv.length < 3) {
   console.log("Error! Missing TILES filename.\nUsage: node server.js TILES");
