@@ -12,21 +12,36 @@ if (process.argv.length === 4) {
   port = parseInt(process.argv[3]);
 }
 
-var TILES = String(process.argv[2]).replace(/\.mbtiles/,'') + '.mbtiles';
+var mbtilesLocation = String(process.argv[2]).replace(/\.mbtiles/,'') + '.mbtiles';
 
-new MBTiles(TILES, function(err, mbtiles) {
+new MBTiles(mbtilesLocation, function(err, mbtiles) {
   if (err) throw err;
   app.get('/:y/:x/:z.*', function(req, res) {
-    // .getTile() expects XYZ.
-    console.log(req.param('y'), req.param('x'), req.param('z'))
-    mbtiles.getTile(req.param('y'), req.param('x'), req.param('z'), function(err, tile, headers) {
-      if (err) {
-        res.send('Tile rendering error: ' + err + '\n');
-      } else {
-        res.header("Content-Type", "image/png")
-        res.send(tile);
+    var extension = req.param(0);
+    switch (extension) {
+      case "png": {
+        mbtiles.getTile(req.param('y'), req.param('x'), req.param('z'), function(err, tile, headers) {
+          if (err) {
+            res.send('Tile rendering error: ' + err + '\n');
+          } else {
+            res.header("Content-Type", "image/png")
+            res.send(tile);
+          }
+        });
+        break;
       }
-    });
+      case "grid.json": {
+        mbtiles.getGrid(req.param('y'), req.param('x'), req.param('z'), function(err, grid, headers) {
+          if (err) {
+            res.send('Grid rendering error: ' + err + '\n');
+          } else {
+            res.header("Content-Type", "text/json")
+            res.send(grid);
+          }
+        });
+        break;
+      }
+    }
   });
 
   console.log('Listening on port: ' + port);
