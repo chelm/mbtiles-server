@@ -5,10 +5,10 @@ var TILES = '{YOURTILES}.mbtiles';
 
 new MBTiles(__dirname + '/' + TILES, function(err, mbtiles) {
   if (err) throw err;
-  app.get('/:y/:x/:z.*', function(req, res) {
+  app.get('/:z/:x/:y.*', function(req, res) {
     // .getTile() expects XYZ.
     console.log(req.param('y'), req.param('x'), req.param('z'))
-    mbtiles.getTile(req.param('y'), req.param('x'), req.param('z'), function(err, tile, headers) {
+    mbtiles.getTile(req.param('z'), req.param('x'), req.param('y'), function(err, tile, headers) {
       if (err) {
         res.send('Tile rendering error: ' + err + '\n');
       } else {
