@@ -17,13 +17,18 @@ var mbtilesLocation = String(process.argv[2]).replace(/\.mbtiles/,'') + '.mbtile
 new MBTiles(mbtilesLocation, function(err, mbtiles) {
   if (err) throw err;
   app.get('/:z/:x/:y.*', function(req, res) {
-    // .getTile() expects ZXY.
-    mbtiles.getTile(req.param('z'), req.param('x'), req.param('y'), function(err, tile, headers) {
-      if (err) {
-        res.send('Tile rendering error: ' + err + '\n');
-      } else {
-        res.header("Content-Type", "image/png");
-        res.send(tile);
+    var extension = req.param(0);
+    switch (extension) {
+      case "png": {
+        mbtiles.getTile(req.param('z'), req.param('x'), req.param('y'), function(err, tile, headers) {
+          if (err) {
+            res.send('Tile rendering error: ' + err + '\n');
+          } else {
+            res.header("Content-Type", "image/png")
+            res.send(tile);
+          }
+        });
+        break;
       }
       case "grid.json": {
         mbtiles.getGrid(req.param('z'), req.param('x'), req.param('y'), function(err, grid, headers) {
@@ -39,7 +44,5 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
     }
   });
 
-  console.log('Listening on port: ' + port);
-  app.listen(port);
-
 });
+
