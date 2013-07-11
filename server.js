@@ -46,3 +46,5 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
 
 });
 
+// actually create the server
+app.listen(port);
