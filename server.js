@@ -22,7 +22,7 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
       case "png": {
         mbtiles.getTile(req.param('z'), req.param('x'), req.param('y'), function(err, tile, headers) {
           if (err) {
-            res.send('Tile rendering error: ' + err + '\n');
+            res.status(404).send('Tile rendering error: ' + err + '\n');
           } else {
             res.header("Content-Type", "image/png")
             res.send(tile);
@@ -33,7 +33,7 @@ new MBTiles(mbtilesLocation, function(err, mbtiles) {
       case "grid.json": {
         mbtiles.getGrid(req.param('z'), req.param('x'), req.param('y'), function(err, grid, headers) {
           if (err) {
-            res.send('Grid rendering error: ' + err + '\n');
+            res.status(404).send('Grid rendering error: ' + err + '\n');
           } else {
             res.header("Content-Type", "text/json")
             res.send(grid);
